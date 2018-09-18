@@ -52,7 +52,10 @@ export default class Tooltip extends PureComponent {
     document.removeEventListener('click', this._handleOutsideClick);
 
   _keyboardShortCutHandler = (e) => {
-    if (e.key === 'Escape') {
+    if (e.defaultPrevented) {
+      return;
+    }
+
       const {
         hideTooltip,
         clearScheduled,
