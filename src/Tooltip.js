@@ -56,6 +56,7 @@ export default class Tooltip extends PureComponent {
       return;
     }
 
+    if (e.key === 'Escape' || e.keyCode === 27) {
       const {
         hideTooltip,
         clearScheduled,
