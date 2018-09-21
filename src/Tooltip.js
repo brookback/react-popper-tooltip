@@ -50,6 +50,22 @@ export default class Tooltip extends PureComponent {
   _removeOutsideClickHandler = () =>
     document.removeEventListener('click', this._handleOutsideClick);
 
+  _keyboardShortCutHandler = (e) => {
+    if (e.defaultPrevented) {
+      return;
+    }
+
+    if (e.key === 'Escape' || e.keyCode === 27) {
+      const {
+        hideTooltip,
+        clearScheduled,
+      } = this.props;
+
+      clearScheduled();
+      hideTooltip();
+    }
+  }
+
   componentDidMount() {
     const { trigger } = this.props;
     const observer = (this.observer = new MutationObserver(() => {
@@ -59,8 +75,11 @@ export default class Tooltip extends PureComponent {
 
     if (trigger === 'click' || trigger === 'right-click') {
       const { removeParentOutsideClickHandler } = this.props;
+
       document.addEventListener('click', this._handleOutsideClick);
       removeParentOutsideClickHandler && removeParentOutsideClickHandler();
+
+      document.addEventListener('keydown', this._keyboardShortCutHandler, { once: true });
     }
   }
 
